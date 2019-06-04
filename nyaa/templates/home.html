@@ -1,13 +1,19 @@
 {% extends "layout.html" %}
-{% block title %}Browse :: {{ config.SITE_NAME }}{% endblock %}
+{% block title %}{% if search.term %}{{ search.term | e}}{% else %}Browse{% endif %} :: {{ config.SITE_NAME }}{% endblock %}
+{% block metatags %}
+{% if search.term %}
+<meta property="og:description" content="Search for '{{ search.term }}'">
+{% else %}
+<meta name="description" content="A BitTorrent community focused on Eastern Asian media including anime, manga, music, and more">
+<meta name="keywords" content="torrents, bittorrent, torrent, anime, manga, sukebei, download, nyaa, magnet, magnets">
+<meta property="og:description" content="{{ config.SITE_NAME }} homepage">
+{% endif %}
+{% endblock %}
 {% block body %}
 
-<div class="alert alert-info">
-	<p><strong>Hello!</strong> This site is still a work in progress and new features (faster and actually more accurate search, comments etc.) will be added in the coming days.</p>
-	<p>We welcome you to provide feedback at <a href="irc://irc.rizon.net/nyaa-dev">#nyaa-dev@irc.rizon.net</a></p>
-	<p>Our GitHub: <a href="https://github.com/nyaadevs" target="_blank">https://github.com/nyaadevs</a> - creating <a href="https://github.com/nyaadevs/nyaa/issues">issues</a> for features and faults is recommendable!</p>
-</div>
-
+{% if not search.term %}
+{% include "infobubble.html" %}
+{% endif %}
 
 {% include "search_results.html" %}
 
